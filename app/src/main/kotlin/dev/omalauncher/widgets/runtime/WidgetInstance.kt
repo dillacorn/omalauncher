@@ -756,6 +756,9 @@ class WidgetInstance(
     fun adopt(old: WidgetInstance) {
         program.globals.forEachIndexed { i, g ->
             if (g is Global.Source || g is Global.State || g is Global.Sampled) {
+                // Contact results are private to a widget's explicitly allowed session; never inherit
+                // them on hot reload, even when a source with the same name existed previously.
+                if (g is Global.Source && g.kind == "android.contacts") return@forEachIndexed
                 val j = old.program.globals.indexOfFirst { it.name == g.name && it::class == g::class }
                 // A secret only stays a secret, sent to the same servers; otherwise an edit could show it, or
                 // a plain state set by owl-send could become one.

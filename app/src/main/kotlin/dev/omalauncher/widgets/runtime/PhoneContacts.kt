@@ -9,7 +9,6 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds.Phone
-import androidx.compose.runtime.snapshotFlow
 import dev.omalauncher.system.changeObserver
 import dev.omalauncher.system.hasPermission
 import dev.omalauncher.widgets.lang.Lst
@@ -146,7 +145,7 @@ class PhoneContacts(private val context: Context) {
                 resolver.registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, observer)
                 registered = true
                 resolver.registerContentObserver(Phone.CONTENT_URI, true, observer)
-            } catch (e: SecurityException) {
+            } catch (e: RuntimeException) {
                 if (registered) resolver.unregisterContentObserver(observer)
                 throw e
             }
