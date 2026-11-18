@@ -1,0 +1,61 @@
+widget "contacts" {
+  page: 3
+  order: 6
+  size: 6x5
+  minSize: 3x3
+  meta { owl: 25; description: "Search phone contacts by name or number, then open details, dial, or start a text. Nothing is read until you allow it."; version: "1.0"; license: "MIT"; category: "productivity" }
+
+  source c = android.contacts
+  state query = ""
+
+  if !c.granted {
+    Column {
+      fill: true
+      justify: center
+      gap: 6
+      Text { text: "contacts"; style: title }
+      Text { text: "Allow this widget to search your phone contacts."; style: small }
+      Button { text: "allow"; onTap: contacts("request") }
+    }
+  } else {
+    Column {
+      fill: true
+      gap: 8
+      Input {
+        text: query
+        placeholder: "Search contacts"
+        onChange: {
+          query = value
+          contacts("search", value)
+        }
+      }
+      if query == "" {
+        Text { text: "Type a name or phone number"; style: muted }
+      } else if len(c.items) == 0 {
+        Text { text: "No matching contacts"; style: muted }
+      }
+      Column {
+        weight: 1
+        scroll: true
+        gap: 10
+        for person in c.items key person.id {
+          Column {
+            fill: width
+            gap: 4
+            Text { text: person.name; bold: true; onTap: contacts("open", person) }
+            for phone in person.numbers {
+              Row {
+                fill: width
+                align: center
+                gap: 6
+                Text { text: phone.label + " · " + phone.number; style: small; weight: 1; maxLines: 1 }
+                Button { text: "call"; onTap: contacts("dial", phone.number) }
+                Button { text: "text"; onTap: contacts("text", phone.number) }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

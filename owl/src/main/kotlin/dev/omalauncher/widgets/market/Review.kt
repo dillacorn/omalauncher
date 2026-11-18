@@ -99,6 +99,9 @@ class Review(
                 "See \"Values in commands\" in the widgets docs (docs/declarations.md)"
         }
         warnings += risks(p.commands - unquoted.toSet())
+        if (p.commands.any { it.startsWith("read matching phone contacts") }) {
+            warnings += "reads contacts' names and phone numbers after a tap; check network and guest actions that could share them"
+        }
         // A heavy shader hangs the GPU whenever its page shows. Code put together while the widget runs is counted by
         // the launcher before it draws it.
         for (code in p.shaders.filterNotNull().distinct()) ShaderCost.problem(code)?.let { errors += "a Shader: $it" }
