@@ -137,6 +137,9 @@ class WidgetEngine(
     /** The home screen's view, for haptic(); set by the UI. */
     var view by services::view
 
+    /** Contacts are permission-scoped to each running widget. */
+    val contacts get() = services.contacts
+
     /** android.airpods and airpods(...), which ask the activity in front for Bluetooth. */
     val airpods get() = services.airpods
 

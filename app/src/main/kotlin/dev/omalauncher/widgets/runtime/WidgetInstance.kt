@@ -156,6 +156,13 @@ interface Services {
     /** Updates for Android data that changes on its own (battery, media); null means poll [android]. */
     fun androidUpdates(name: String): Flow<Value>? = null
 
+    /** Contact searches and consent belong to each widget, never to a shared android.* source. */
+    fun contactsUpdates(owner: Any): Flow<Value>? = null
+
+    fun contacts(owner: Any, word: String, target: Value?) {}
+
+    fun contactsStop(owner: Any) {}
+
     /** android.speech for [owner], a widget: its own dictation, which stops as it stops collecting. See [Dictation]. */
     fun speechUpdates(owner: Any): Flow<Value>? = null
 
@@ -603,6 +610,11 @@ class WidgetInstance(
         // The microphone, like the keys, only from a touch; stopping it from anywhere.
         if (name == "speech" && inTrigger && key !in SPEECH_ANYWHERE) return report("speech(\"$key\") works in onTap, not in a trigger")
         if (name == "speech") return key?.let { services.speech(this, it) } ?: Unit
+        if (name == "contacts") {
+            // A trigger can update the query, but must not open an Android activity or ask for permission.
+            if (inTrigger && key != "search") return report("contacts(\"$key\") needs a user interaction, not a trigger")
+            return key?.let { services.contacts(this, it, args.getOrNull(1)) } ?: Unit
+        }
         // Names built from values, which the compiler couldn't check: say so rather than press nothing.
         if (name == "pressKey" && key != null && KeyNames.combo(key) == null) return report("pressKey(\"$key\") names no key; ${KeyNames.help}")
         if (name == "latch" && key != null && key !in KeyNames.latches) return report("latch(\"$key\"): latch takes ${KeyNames.latches.joinToString()}")
@@ -838,6 +850,7 @@ class WidgetInstance(
                         val pushed =
                             when {
                                 g.kind == "android.speech" -> services.speechUpdates(this@WidgetInstance)
+                                g.kind == "android.contacts" -> services.contactsUpdates(this@WidgetInstance)
                                 g.kind.startsWith("android.") -> services.androidUpdates(g.kind.removePrefix("android."))
                                 else -> null
                             }
@@ -1316,6 +1329,7 @@ class WidgetInstance(
 
     fun stop() {
         services.sound(this, null, null)
+        services.contactsStop(this)
         jobs.forEach { it.cancel() }
         jobs.clear()
         terminals.values.forEach { it.close() }

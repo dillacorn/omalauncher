@@ -204,7 +204,9 @@ internal val SINCE =
         // owl 23: how strong a haptic() is.
         mapOf(HAPTIC_STRENGTH to 23) +
         // owl 24: the strip of apps above home's prompt bar as a file, and what it shows; Rows that scroll sideways.
-        listOf(STRIP_FILE, "android.strip", "Row.scroll").associateWith { 24 }
+        listOf(STRIP_FILE, "android.strip", "Row.scroll").associateWith { 24 } +
+        // owl 25: permission-scoped, indexed phone contact search and Android dialer/SMS handoff.
+        listOf("android.contacts", "contacts").associateWith { 25 }
 
 /** A Shader's `uniform shader name;`, an image it samples, named like this in [SINCE]. */
 internal const val SHADER_IMAGE = "uniform shader"
@@ -356,10 +358,10 @@ val SPEECH_ANYWHERE = setOf("stop", "cancel")
  * The android sources a widget asks Android's permission for, each with x("request") from a tap: never a press, before
  * the finger lifts, or a trigger, so a widget can't ask on its own. The compiler and WidgetInstance both check.
  */
-val ASKS = setOf("location", "calendar", "airpods")
+val ASKS = setOf("location", "calendar", "airpods", "contacts")
 
 /** Data from the phone and the launcher; device is fixed, system, network and power are polled, the rest update as they change. */
-internal val ANDROID = setOf("battery", "device", "media", "notifications", "volume", "system", "network", "power", "sim", "alarm", "modes", "apps", "agents", "recent", "drawer", "modifiers", "speech", "location", "airpods", "calendar", "motion", "strip")
+internal val ANDROID = setOf("battery", "device", "media", "notifications", "volume", "system", "network", "power", "sim", "alarm", "modes", "apps", "agents", "recent", "drawer", "modifiers", "speech", "location", "airpods", "calendar", "contacts", "motion", "strip")
 
 /**
  * The words an action's first value may be, when it's written out; [numbers] also allows a number. [forms] are the
@@ -438,6 +440,17 @@ internal val ACTION_WORDS =
                 "calendar takes request or open; the events are in source x = android.calendar",
                 forms = mapOf("request" to (1..1 to "calendar(\"request\")"), "open" to (1..2 to "calendar(\"open\"), or calendar(\"open\", event)")),
             ),
+        "contacts" to Words(
+            setOf("request", "search", "dial", "text", "open"),
+            "contacts takes request, search, dial, text or open; source x = android.contacts gives search results",
+            forms = mapOf(
+                "request" to (1..1 to "contacts(\"request\")"),
+                "search" to (2..2 to "contacts(\"search\", query)"),
+                "dial" to (2..2 to "contacts(\"dial\", phone.number)"),
+                "text" to (2..2 to "contacts(\"text\", phone.number)"),
+                "open" to (2..2 to "contacts(\"open\", contact)"),
+            ),
+        ),
         // owl 18: where a Browser goes, or how it loads where it is.
         "web" to setOf("back", "forward", "reload", "stop").let { Words(it, "web takes ${it.joinToString()}") },
         // A listening mode, the next one, or a setting: on and off ones turn over without a value.

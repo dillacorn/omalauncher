@@ -90,6 +90,7 @@ import dev.omalauncher.ui.home.open
 import dev.omalauncher.ui.home.recentApps
 import dev.omalauncher.widgets.runtime.battery
 import dev.omalauncher.widgets.runtime.AirPods
+import dev.omalauncher.widgets.runtime.PhoneContacts
 import dev.omalauncher.widgets.runtime.Alarm
 import dev.omalauncher.widgets.runtime.Media
 import dev.omalauncher.widgets.runtime.Modes
@@ -188,6 +189,8 @@ class WidgetServices(
     private val motion = Motion(context)
     /** android.airpods and airpods(...); each activity that shows widgets lets it ask for Bluetooth while it's in front. */
     val airpods = AirPods(context, scope)
+    /** Per-widget Android contacts access; never shared or exposed to guest commands. */
+    val contacts = PhoneContacts(context)
     private val panels = SystemPanels(context)
 
     /** Opens launcher screens ("style" or "themes", "agents", "store" or "store:apps", "drawer"); set by the UI. */
@@ -298,6 +301,12 @@ class WidgetServices(
     ) = runtime.dictation.act(owner, word)
 
     override fun heard(owner: Any) = runtime.dictation.heard(owner)
+
+    override fun contactsUpdates(owner: Any) = contacts.updates(owner)
+
+    override fun contacts(owner: Any, word: String, target: Value?) = contacts.action(owner, word, target)
+
+    override fun contactsStop(owner: Any) = contacts.stop(owner)
 
     /** "work" or "clone" for an app in a profile beside the launcher's own, as the drawer marks it; null for its own. */
     private fun profileKind(user: UserHandle): String? =

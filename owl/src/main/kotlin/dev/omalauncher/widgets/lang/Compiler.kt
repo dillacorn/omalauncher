@@ -966,6 +966,7 @@ class Compiler private constructor(
                 if (e.name == "speech") commands += "listen through the microphone after a tap, and read what you say"
                 if (e.name == "location") commands += "read the phone's approximate location, once you allow it"
                 if (e.name == "calendar") commands += "read events in the phone's calendars, once you allow it"
+                if (e.name == "contacts") commands += "read matching phone contacts (names and numbers), after a tap enables them for this widget"
                 if (e.name == "airpods") commands += AIRPODS_COMMAND
                 if (e.name == "motion") commands += "read how the phone is tilted while it shows"
                 Global.Source(d.name, "android.${e.name}", null, (every ?: 60.0).coerceAtLeast(1.0), false, 0)
@@ -1549,6 +1550,15 @@ class Compiler private constructor(
                     if (TriggerKind.entries.any { it.word == handlerName } && word != null && word !in SPEECH_ANYWHERE) fail("speech(\"$word\") works in onTap, not in a trigger; stop and cancel work anywhere", call.pos)
                 }
                 if (call.name == "airpods") commands += AIRPODS_COMMAND
+                if (call.name == "contacts") {
+                    if (androidSources("contacts").isEmpty()) fail("contacts(...) needs source c = android.contacts", call.pos)
+                    val word = (args.firstOrNull()?.const as? Str)?.v
+                    if (word in setOf("dial", "text", "open")) commands += "open the phone's dialer, SMS app or contact details from a widget action"
+                    // Background triggers may refresh matches, but never raise another Android app over the user.
+                    if (TriggerKind.entries.any { it.word == handlerName } && word != "search") {
+                        fail("contacts requests and phone actions work from a user interaction, not a trigger", call.pos)
+                    }
+                }
                 if (call.name in ASKS && (args.getOrNull(0)?.const as? Str)?.v == "request") {
                     val ask = "${call.name}(\"request\")"
                     // Asking for what nothing reads: what it allows is only in the source.
