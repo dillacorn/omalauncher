@@ -50,6 +50,8 @@
     <string name="permissions_mic_uses">o microfone da barra de prompt, Voice, widgets que ouvem</string>
     <string name="permissions_location">localização</string>
     <string name="permissions_location_uses">aproximada · widgets como o clima, enquanto estão na tela · agentes com omalauncher location</string>
+    <string name="permissions_contacts">contatos</string>
+    <string name="permissions_contacts_uses">nomes e números de telefone · apenas resultados enquanto o widget está visível · permissão por widget</string>
     <string name="permissions_calendar">agenda</string>
     <string name="permissions_calendar_uses">seus eventos, só leitura · widgets de agenda · agentes com omalauncher calendar</string>
     <string name="permissions_bluetooth">bluetooth</string>

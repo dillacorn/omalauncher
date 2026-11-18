@@ -48,6 +48,8 @@
     <string name="permissions_mic_uses">プロンプトバーのマイク、Voice、音声を聞き取るウィジェット</string>
     <string name="permissions_location">位置情報</string>
     <string name="permissions_location_uses">おおよその位置情報 · 天気などのウィジェット（表示中のみ） · omalauncher location を使うエージェント</string>
+    <string name="permissions_contacts">連絡先</string>
+    <string name="permissions_contacts_uses">名前と電話番号 · ウィジェット表示中の検索結果のみ · ウィジェットごとに許可</string>
     <string name="permissions_calendar">カレンダー</string>
     <string name="permissions_calendar_uses">予定（読み取りのみ） · カレンダーウィジェット · omalauncher calendar を使うエージェント</string>
     <string name="permissions_bluetooth">bluetooth</string>

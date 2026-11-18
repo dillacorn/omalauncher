@@ -16,6 +16,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- Widgets' android.calendar, only after a tap on calendar("request"). -->
     <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <!-- Optional on-device contact search, enabled only by an explicit tap in each widget. -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <!-- AirPods' batteries and settings for android.airpods (AirPods.kt), over their own link. Asked for by a widget's
          first airpods(...); before Android 12, BLUETOOTH covers it. -->

@@ -53,6 +53,8 @@
     <string name="permissions_mic_uses">das mikro in der eingabeleiste, Voice, widgets, die zuhören</string>
     <string name="permissions_location">standort</string>
     <string name="permissions_location_uses">ungefähr · widgets wie das wetter, solange sie zu sehen sind · agenten mit omalauncher location</string>
+    <string name="permissions_contacts">kontakte</string>
+    <string name="permissions_contacts_uses">namen und telefonnummern · nur treffer, solange das widget sichtbar ist · für jedes widget separat erlauben</string>
     <string name="permissions_calendar">kalender</string>
     <string name="permissions_calendar_uses">deine termine, nur lesen · kalender-widgets · agenten mit omalauncher calendar</string>
     <string name="permissions_bluetooth">bluetooth</string>

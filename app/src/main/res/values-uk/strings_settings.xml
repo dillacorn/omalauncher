@@ -51,6 +51,8 @@
     <string name="permissions_mic_uses">мікрофон у рядку запиту, Голос, віджети, що слухають</string>
     <string name="permissions_location">місцезнаходження</string>
     <string name="permissions_location_uses">приблизне · віджети на кшталт погоди, поки вони на екрані · агенти через omalauncher location</string>
+    <string name="permissions_contacts">контакти</string>
+    <string name="permissions_contacts_uses">імена та номери телефонів · лише результати, поки віджет видно · дозвіл для кожного віджета</string>
     <string name="permissions_calendar">календар</string>
     <string name="permissions_calendar_uses">ваші події, лише читання · віджети календаря · агенти через omalauncher calendar</string>
     <string name="permissions_bluetooth">bluetooth</string>

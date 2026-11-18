@@ -64,6 +64,7 @@ fun PermissionsScreen(
         tick++
         runtime.location.recheck()
         runtime.calendar.recheck()
+        runtime.widgets.contacts.recheck()
         runtime.widgets.airpods.recheck()
     }
     LifecycleResumeEffect(Unit) {
@@ -80,6 +81,7 @@ fun PermissionsScreen(
     val askMic = rememberAskPermission(Manifest.permission.RECORD_AUDIO, then = answered)
     val askLocation = rememberAskPermission(Manifest.permission.ACCESS_COARSE_LOCATION, then = answered)
     val askCalendar = rememberAskPermission(Manifest.permission.READ_CALENDAR, then = answered)
+    val askContacts = rememberAskPermission(Manifest.permission.READ_CONTACTS, then = answered)
 
     @SuppressLint("InlinedApi")
     val askBluetooth = rememberAskPermission(Manifest.permission.BLUETOOTH_CONNECT, then = answered)
@@ -113,6 +115,13 @@ fun PermissionsScreen(
                     stringResource(R.string.permissions_calendar_uses),
                     context.hasPermission(Manifest.permission.READ_CALENDAR),
                     askCalendar,
+                    appDetails,
+                ),
+                Permission(
+                    R.string.permissions_contacts,
+                    stringResource(R.string.permissions_contacts_uses),
+                    context.hasPermission(Manifest.permission.READ_CONTACTS),
+                    askContacts,
                     appDetails,
                 ),
                 // Before Android 12, Bluetooth is an install-time permission without a switch.

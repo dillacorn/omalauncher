@@ -51,6 +51,8 @@
     <string name="permissions_mic_uses">микрофон в строке ввода, Голос, виджеты, которые слушают</string>
     <string name="permissions_location">местоположение</string>
     <string name="permissions_location_uses">приблизительное · виджеты вроде погоды, пока они на экране · агенты через omalauncher location</string>
+    <string name="permissions_contacts">контакты</string>
+    <string name="permissions_contacts_uses">имена и номера телефонов · только совпадения, пока виджет виден · разрешение для каждого виджета</string>
     <string name="permissions_calendar">календарь</string>
     <string name="permissions_calendar_uses">ваши события, только чтение · виджеты календаря · агенты через omalauncher calendar</string>
     <string name="permissions_bluetooth">bluetooth</string>
