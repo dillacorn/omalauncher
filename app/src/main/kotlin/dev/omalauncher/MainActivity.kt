@@ -88,6 +88,9 @@ class MainActivity : ComponentActivity() {
 
     /** Asks once to become the default home app; Android shows its own chooser. */
     private fun requestHomeRole() {
+        // A test build must not offer to replace the user's daily home launcher automatically.
+        // It can still be selected manually in Android's default Home app settings.
+        if (BuildConfig.APPLICATION_ID == "dev.omalauncher.test") return
         val roles = getSystemService(RoleManager::class.java)
         if (!roles.isRoleAvailable(RoleManager.ROLE_HOME) || roles.isRoleHeld(RoleManager.ROLE_HOME)) return
         val prefs = LauncherData.prefs(this)

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Omalauncher Test</string>
+    <string name="notification_listener">Omalauncher Test widgets</string>
+    <string name="wallpaper_label">Omalauncher Test wallpaper</string>
+</resources>
