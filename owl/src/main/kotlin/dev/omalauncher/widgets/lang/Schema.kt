@@ -204,7 +204,9 @@ internal val SINCE =
         // owl 23: how strong a haptic() is.
         mapOf(HAPTIC_STRENGTH to 23) +
         // owl 24: the strip of apps above home's prompt bar as a file, and what it shows; Rows that scroll sideways.
-        listOf(STRIP_FILE, "android.strip", "Row.scroll").associateWith { 24 }
+        listOf(STRIP_FILE, "android.strip", "Row.scroll").associateWith { 24 } +
+        // owl 26: opt-in refresh rates above the original 60 fps limit.
+        mapOf(FRAME_RATE_HIGH to 26)
 
 /** A Shader's `uniform shader name;`, an image it samples, named like this in [SINCE]. */
 internal const val SHADER_IMAGE = "uniform shader"
@@ -270,8 +272,14 @@ internal const val APP_STATUS_BAR = "an app's statusBar"
 /** `fps:` on a widget, face, app or panel, named like this in [SINCE]. */
 internal const val FRAME_RATE = "fps"
 
-/** The most frames a second `fps:` asks for, and what an animation gets without it. */
-const val MAX_FPS = 60
+/** Using a constant fps above 60 requires an engine with the high-refresh clock. */
+internal const val FRAME_RATE_HIGH = "fps above 60"
+
+/** The unchanged default for ordinary widgets and faces. */
+const val DEFAULT_FPS = 60
+
+/** Explicit opt-in ceiling on high-refresh displays (owl 26). */
+const val MAX_FPS = 120
 
 /** A widget's or a face's `lock:`, named like this in [SINCE]. */
 internal const val HOME_LOCK = "lock"

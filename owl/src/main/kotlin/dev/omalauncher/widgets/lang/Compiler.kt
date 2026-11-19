@@ -27,7 +27,7 @@ class Compiler private constructor(
          * instead of failing on what they don't know. Bump it with every
          * addition a widget could depend on: nodes, properties, builtins.
          */
-        const val LEVEL = 25
+        const val LEVEL = 26
         private const val MAX_ASSET_BYTES = 2 shl 20
 
         /** Pages as far out as a file can ask for; past Int's range, the pages either side of them would wrap. */
@@ -456,6 +456,7 @@ class Compiler private constructor(
         val e = ex(p.value, root)
         val c = e.const
         if (c != null && (c !is Num || c.v < 1 || c.v > MAX_FPS)) fail("fps is a number of frames a second, from 1 to $MAX_FPS, like fps: 10 or fps: playing ? 30 : 10", p.pos)
+        if (c is Num && c.v > DEFAULT_FPS) since(FRAME_RATE_HIGH, p.pos)
         return e
     }
 

@@ -3,6 +3,7 @@ package dev.omalauncher.widgets.runtime
 import android.graphics.Bitmap
 import android.util.Log
 import dev.omalauncher.upgrade.writeAtomically
+import dev.omalauncher.widgets.lang.DEFAULT_FPS
 import dev.omalauncher.widgets.lang.MAX_FPS
 import dev.omalauncher.widgets.lang.PersistedValues
 import dev.omalauncher.widgets.lang.TriggerKind
@@ -673,7 +674,7 @@ class WidgetInstance(
      * game at half rate lags behind the finger. Widgets, faces and panels on home keep the governor, which holds the home
      * screen smooth and the battery spared.
      */
-    private fun keepsFullRate() = program.kind == OwlKind.App && program.fps != null && frameRate() >= MAX_FPS
+    private fun keepsFullRate() = program.kind == OwlKind.App && program.fps != null && frameRate() >= DEFAULT_FPS
 
     /** Evaluates [ev], turning errors into null plus a report; a broken binding never takes the launcher down. */
     fun eval(
@@ -1226,15 +1227,17 @@ class WidgetInstance(
     fun showsStatusBar() = program.statusBar?.let { eval(it, root, "statusBar").truthy } ?: true
 
     /**
-     * How many frames a second the `time` animation gets now: its `fps`, kept from 1 to [MAX_FPS], else [MAX_FPS]. A
-     * `time` in it doesn't count as a read, or a clock nothing else reads would never stop.
+     * The ordinary default stays [DEFAULT_FPS], including older owl levels.
+     * Owl 26 can opt into up to [MAX_FPS]; earlier dynamic fps expressions
+     * stay capped at 60. Reading fps must not wake an otherwise idle clock.
      */
     fun frameRate(): Double {
-        val ev = program.fps ?: return MAX_FPS.toDouble()
+        val limit = if (program.level >= 26) MAX_FPS.toDouble() else DEFAULT_FPS.toDouble()
+        val ev = program.fps ?: return DEFAULT_FPS.toDouble()
         val read = timeRead
         val n = (eval(ev, root, "fps") as? Num)?.v
         timeRead = read
-        return if (n == null || n.isNaN()) MAX_FPS.toDouble() else n.coerceIn(1.0, MAX_FPS.toDouble())
+        return if (n == null || n.isNaN()) DEFAULT_FPS.toDouble() else n.coerceIn(1.0, limit)
     }
 
     /** Whether a widget or a face holds the home screen still now: its `lock`, false unless it says otherwise. */

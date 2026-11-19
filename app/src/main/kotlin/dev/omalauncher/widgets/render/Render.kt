@@ -303,8 +303,9 @@ private fun ScreenNodes(
  * A frame clock for widgets that read `time`, only while they're on screen ([covered] is false)
  * and something still reads it: a `time` under an `if` that's false, like a backdrop drawn only
  * while music plays, stops it after a few frames, and the next read starts it again. At most
- * [MAX_FPS] frames a second, whatever the screen's rate (on a 120 Hz screen, twice it costs twice the battery for
- * motion that looks the same), or fewer as the widget's `fps:` asks.
+ * 60 frames a second by default. Owl 26 files can explicitly opt into
+ * [MAX_FPS] with `fps:`; on slower displays, vsync naturally limits it.
+ * High refresh draws more often and can cost more battery.
  */
 @Composable
 private fun FrameClock(
